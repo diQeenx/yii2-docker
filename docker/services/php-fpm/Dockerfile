@@ -14,17 +14,10 @@ VOLUME /var/www/src/logs
 COPY entrypoint.sh /usr/local/bin
 COPY docker-php-composer-install.sh /usr/local/bin
 
-RUN chmod +x /usr/local/bin/entrypoint.sh \
+RUN set -xe \
+    && chmod +x /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/docker-php-composer-install.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-CMD ["/usr/local/bin/entrypoint.sh"]
-
-
-
-
-
-
-
-
+CMD ["php-fpm"]
