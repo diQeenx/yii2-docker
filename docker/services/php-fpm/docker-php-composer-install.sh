@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -ex
+
 EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 ACTUAL_SIGNATURE="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
@@ -11,7 +13,7 @@ then
     exit 1
 fi
 
-php composer-setup.php --install-dir=/usr/bin --file-name=composer --quiet
+php composer-setup.php --install-dir=/usr/bin --filename=composer --quiet
 RESULT=$?
 rm composer-setup.php
 exit $RESULT

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 if [ ! -f "/usr/bin/composer" ]; then
   docker-php-composer-install.sh;
