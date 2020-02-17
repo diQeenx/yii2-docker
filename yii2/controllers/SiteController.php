@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\Customer;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -124,10 +127,5 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
-    }
-
-    public function actionSay($message = "Привет")
-    {
-        return $this->render('say', ['message' => $message]);
     }
 }

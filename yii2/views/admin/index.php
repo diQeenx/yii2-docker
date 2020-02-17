@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'ETTS - Главная';
+$this->title = 'ETTS - админка';
 ?>
 <div class="site-index">
 

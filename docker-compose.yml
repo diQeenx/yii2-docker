@@ -4,6 +4,7 @@ x-volumes:
   - &app-src ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
 
 services:
+
   nginx:
     image: nginx:alpine
     container_name: yii2-docker_nginx
@@ -27,8 +28,24 @@ services:
       - yii2-docker_net
     volumes:
       - *app-src
-      - ./docker/services/php-fpm:/usr/local/etc/php:ro
       - composer-cache:/var/www/.composer
+
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: test
+      MYSQL_PASSWORD: test
+      MYSQL_USER: test
+    ports:
+      - 3310:3306
+    networks:
+      - yii2-docker_net
+    volumes:
+      - db-volume:/var/lib/mysql
 
 networks:
   yii2-docker_net:
@@ -37,3 +54,5 @@ networks:
 volumes:
   composer-cache:
     name: yii2-docker_composer_cache
+  db-volume:
+    name: yii2-docker_db_volume

@@ -1,12 +1,10 @@
 FROM php:7.2-fpm-alpine
 
-MAINTAINER dzmitry.danilau@innowise-group.com
+#MAINTAINER dzmitry.danilau@innowise-group.com
 
 RUN set -xe \
     && apk update \
-    && apk add bash \
-        curl \
-        wget \
+    && apk add bash curl wget \
     #gd
         freetype-dev \
     #intl
@@ -14,24 +12,20 @@ RUN set -xe \
     #gettext
         gettext-dev \
     #zip
-        zlib-dev \
-    #igbinary, redis
-        zstd-dev \
-        autoconf \
-        g++ \
-        make
+        zlib-dev
 
 RUN set -xe \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install -j$(nproc) intl \
-    && docker-php-ext-install -j$(nproc) gettext \
-    && docker-php-ext-install -j$(nproc) pdo \
-    && docker-php-ext-install -j$(nproc) pdo_mysql \
-    && docker-php-ext-install -j$(nproc) zip
-
-RUN set -xe \
-    && pecl install igbinary \
-        redis
+	&& apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install gettext \
+    && docker-php-ext-install pdo \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install zip \
+    # Pecl
+    && pecl install igbinary redis && docker-php-ext-enable redis \
+    # Cleaning up
+    && apk del --no-network .build-deps
 
 COPY entrypoint.sh /usr/local/bin
 COPY docker-php-composer-install.sh /usr/local/bin
@@ -43,6 +37,8 @@ RUN set -xe \
     /var/www/logs \
     /var/www/src/ \
     /var/www/.composer
+
+RUN chown 777 /var/www/src
 
 VOLUME ["/var/www/logs", "/var/www/.composer"]
 
