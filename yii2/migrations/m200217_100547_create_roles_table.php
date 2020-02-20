@@ -16,6 +16,13 @@ class m200217_100547_create_roles_table extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string()->unique()->notNull()
         ]);
+
+        $data = ['admin', 'user'];
+
+        $this->batchInsert('roles', ['name'], [
+            ['admin'],
+            ['user']
+        ]);
     }
 
     /**

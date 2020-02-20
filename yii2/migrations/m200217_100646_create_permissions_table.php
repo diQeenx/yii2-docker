@@ -13,7 +13,6 @@ class m200217_100646_create_permissions_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%permissions}}', [
-            'id' => $this->primaryKey()->unsigned(),
             'user_id' => $this->integer()->notNull()->unsigned(),
             'role_id' => $this->integer()->notNull()->unsigned()
         ]);
@@ -47,6 +46,11 @@ class m200217_100646_create_permissions_table extends Migration
             'id',
             'CASCADE'
         );
+
+        $this->insert('permissions', [
+           'user_id' => 1,
+           'role_id' => 1
+        ]);
     }
 
     /**
